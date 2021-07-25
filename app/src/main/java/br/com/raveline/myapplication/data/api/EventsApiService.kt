@@ -12,7 +12,7 @@ interface EventsApiService {
     @GET("events")
     suspend fun getEventsRequest(): Response<EventModel>
 
-    @GET("events")
+    @GET("events/{id}")
     suspend fun getEventById(
         @Path("id") id: Int
     ):Response<EventItemModel>

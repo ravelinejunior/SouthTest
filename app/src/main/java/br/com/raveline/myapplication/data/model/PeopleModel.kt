@@ -6,13 +6,13 @@ import java.io.Serializable
 
 data class PeopleModel(
     @SerializedName("eventId")
-    val eventId: String,
+    val eventId: String?,
     @SerializedName("id")
-    val id: String,
+    val id: String?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("picture")
-    val picture: String,
+    val picture: String?,
 
-    val email:String
-):Serializable
+    val email: String
+) : Serializable
