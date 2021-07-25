@@ -15,8 +15,8 @@ class EventsRepositoryImpl(
         return responseToResource(eventsDataSource.getEvents())
     }
 
-    override suspend fun getEventsById(): Resource<EventItemModel> {
-        return responseToResourceItem(eventsDataSource.getEventById())
+    override suspend fun getEventsById(id:Int): Resource<EventItemModel> {
+        return responseToResourceItem(eventsDataSource.getEventById(id))
     }
 
     override suspend fun shareEvent(peopleModel: PeopleModel) {

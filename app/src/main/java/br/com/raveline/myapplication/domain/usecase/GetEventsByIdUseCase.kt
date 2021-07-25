@@ -7,5 +7,5 @@ import br.com.raveline.myapplication.domain.repository.EventsRepository
 class GetEventsByIdUseCase(
     private val eventsRepository: EventsRepository
 ) {
-    suspend fun execute():Resource<EventItemModel> = eventsRepository.getEventsById()
+    suspend fun execute(id:Int):Resource<EventItemModel> = eventsRepository.getEventsById(id)
 }
