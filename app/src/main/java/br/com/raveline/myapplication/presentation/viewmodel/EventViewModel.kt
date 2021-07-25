@@ -18,7 +18,7 @@ class EventViewModel(
     private val getEventsUseCase: GetEventsUseCase,
     private val application: Application
 ) : ViewModel() {
-    private val events: MutableLiveData<Resource<EventModel>> = MutableLiveData()
+     val events: MutableLiveData<Resource<EventModel>> = MutableLiveData()
 
     fun getEvents() = viewModelScope.launch(Dispatchers.IO) {
 

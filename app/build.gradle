@@ -95,7 +95,7 @@ dependencies {
     // Annotation processor
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
-//navigation
+    //navigation
     def nav_version = "2.3.5"
     // Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -118,6 +118,9 @@ dependencies {
     //glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //Circle image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:2.1.0"

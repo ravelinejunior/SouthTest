@@ -1,16 +1,29 @@
 package br.com.raveline.myapplication
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.fragment.NavHostFragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import br.com.raveline.myapplication.databinding.ActivityMainBinding
+import br.com.raveline.myapplication.presentation.viewmodel.EventViewModel
+import br.com.raveline.myapplication.presentation.viewmodel.factory.EventViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
+    lateinit var eventViewModel: EventViewModel
+
+    @Inject
+    lateinit var eventViewModelFactory: EventViewModelFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        eventViewModel =
+            ViewModelProvider(this, eventViewModelFactory).get(EventViewModel::class.java)
 
 
     }
