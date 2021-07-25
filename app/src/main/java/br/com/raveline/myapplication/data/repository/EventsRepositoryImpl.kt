@@ -20,7 +20,7 @@ class EventsRepositoryImpl(
     }
 
     override suspend fun shareEvent(peopleModel: PeopleModel) {
-        TODO("Not yet implemented")
+        eventsDataSource.shareEvent()
     }
 
     override suspend fun checkInEvent(peopleModel: PeopleModel): Resource<PeopleModel> {

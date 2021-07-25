@@ -9,17 +9,21 @@ import retrofit2.Response
 
 class EventsRemoteDataSourceImpl(
     private val eventsApiService: EventsApiService,
-    private val id: Int
+
 ) : EventRemoteDataSource {
     override suspend fun getEvents(): Response<EventModel> {
         return eventsApiService.getEventsRequest()
     }
 
-    override suspend fun getEventById(): Response<EventItemModel> {
+    override suspend fun getEventById(id:Int): Response<EventItemModel> {
         return eventsApiService.getEventById(id)
     }
 
     override suspend fun postCheckIn(): Response<PeopleModel> {
         return eventsApiService.postCheckInEvent()
+    }
+
+    override fun shareEvent(): PeopleModel {
+        TODO("Not yet implemented")
     }
 }

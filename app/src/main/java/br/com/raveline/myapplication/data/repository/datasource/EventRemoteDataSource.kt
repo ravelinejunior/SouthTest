@@ -7,6 +7,7 @@ import retrofit2.Response
 
 interface EventRemoteDataSource {
     suspend fun getEvents(): Response<EventModel>
-    suspend fun getEventById(): Response<EventItemModel>
+    suspend fun getEventById(id:Int): Response<EventItemModel>
     suspend fun postCheckIn(): Response<PeopleModel>
+    fun shareEvent(): PeopleModel
 }
