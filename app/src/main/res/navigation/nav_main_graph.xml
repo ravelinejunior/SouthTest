@@ -31,5 +31,8 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="event_item"
+            app:argType="br.com.raveline.myapplication.data.model.EventItemModel" />
     </fragment>
 </navigation>

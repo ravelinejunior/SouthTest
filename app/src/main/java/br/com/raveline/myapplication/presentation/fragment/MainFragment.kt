@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.raveline.myapplication.MainActivity
 import br.com.raveline.myapplication.R
@@ -34,8 +33,20 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mainBinding = FragmentMainBinding.bind(view)
         eventViewModel = (activity as MainActivity).eventViewModel
+        eventsAdapter = (activity as MainActivity).eventsAdapter
         initRecyclerView()
         viewEventsList()
+
+        eventsAdapter.setOnItemClickListener {
+            //recupera o valor pra passagem dos parametros pra proxima fragment
+            val bundle = Bundle().apply {
+                putSerializable(ITEM_EVENT_KEY,it)
+            }
+
+            findNavController().navigate(
+                R.id.action_mainFragment_to_detailsFragment,bundle
+            )
+        }
     }
 
     private fun viewEventsList() {
@@ -65,11 +76,11 @@ class MainFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        eventsAdapter = EventsAdapter()
+
         mainBinding.recyclerViewMainFragment.apply {
             adapter = eventsAdapter
             setHasFixedSize(true)
-            layoutManager = GridLayoutManager(activity,2,RecyclerView.VERTICAL,false)
+            layoutManager = GridLayoutManager(activity, 2, RecyclerView.VERTICAL, false)
 
         }
     }
@@ -80,6 +91,10 @@ class MainFragment : Fragment() {
 
     private fun hideProgressBar() {
         mainBinding.progressBarMainFragment.visibility = View.GONE
+    }
+
+    companion object{
+        const val ITEM_EVENT_KEY = "event_item"
     }
 
 }

@@ -1,7 +1,6 @@
 package br.com.raveline.myapplication.presentation.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -28,6 +27,12 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.MyViewHolder>() {
     }
 
     val differ = AsyncListDiffer(this, callback)
+
+    private var onItemClickListener: ((EventItemModel) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (EventItemModel) -> Unit) {
+        onItemClickListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding =
@@ -56,9 +61,16 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.MyViewHolder>() {
                     Glide.with(ivMainAdapter.context).load(noImageUrl).into(ivMainAdapter)
                 }
 
+                root.setOnClickListener {
+                    onItemClickListener?.let { item ->
+                        item(eventItem)
+                    }
+                }
+
             }
         }
     }
+
 
     fun convertLongToTime(time: Long): String {
         val date = Date(time)

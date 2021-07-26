@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import br.com.raveline.myapplication.databinding.ActivityMainBinding
+import br.com.raveline.myapplication.presentation.adapter.EventsAdapter
 import br.com.raveline.myapplication.presentation.viewmodel.EventViewModel
 import br.com.raveline.myapplication.presentation.viewmodel.factory.EventViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var eventViewModelFactory: EventViewModelFactory
+
+    @Inject
+    lateinit var eventsAdapter: EventsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
