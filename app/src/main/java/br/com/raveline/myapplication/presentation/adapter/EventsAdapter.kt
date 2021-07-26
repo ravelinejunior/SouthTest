@@ -1,6 +1,7 @@
 package br.com.raveline.myapplication.presentation.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -49,21 +50,19 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.MyViewHolder>() {
         fun bind(eventItem: EventItemModel) {
             adapterBinding.apply {
                 tvTitleMainAdapter.text = eventItem.title
-                tvPriceMainAdapter.text = "R$ ${eventItem.price}"
-                tvDateMainAdapter.text = convertLongToTime(eventItem.date!!.toLong())
-
                 if (verifyImageSource(eventItem.image!!)) {
                     Glide.with(ivMainAdapter.context).load(eventItem.image).into(ivMainAdapter)
                 } else {
                     Glide.with(ivMainAdapter.context).load(noImageUrl).into(ivMainAdapter)
                 }
+
             }
         }
     }
 
     fun convertLongToTime(time: Long): String {
         val date = Date(time)
-        val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return format.format(date)
     }
 

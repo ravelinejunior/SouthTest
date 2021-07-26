@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
+    android:elevation="8dp"
     tools:context=".presentation.fragment.MainFragment">
 
     <ProgressBar
@@ -23,6 +25,7 @@
         android:id="@+id/recyclerView_main_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import br.com.raveline.myapplication.MainActivity
 import br.com.raveline.myapplication.R
 import br.com.raveline.myapplication.data.utils.Resource
@@ -65,7 +68,8 @@ class MainFragment : Fragment() {
         eventsAdapter = EventsAdapter()
         mainBinding.recyclerViewMainFragment.apply {
             adapter = eventsAdapter
-            layoutManager = LinearLayoutManager(activity)
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(activity,2,RecyclerView.VERTICAL,false)
 
         }
     }
