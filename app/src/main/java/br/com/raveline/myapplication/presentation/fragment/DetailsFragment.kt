@@ -6,12 +6,18 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import br.com.raveline.myapplication.MainActivity
 import br.com.raveline.myapplication.R
+import br.com.raveline.myapplication.data.model.EventItemModel
+import br.com.raveline.myapplication.data.model.PeopleModel
+import br.com.raveline.myapplication.data.utils.Resource
 import br.com.raveline.myapplication.databinding.FragmentDetailsBinding
 import br.com.raveline.myapplication.presentation.adapter.EventsAdapter.Companion.noImageUrl
+import br.com.raveline.myapplication.presentation.viewmodel.EventViewModel
 import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,6 +26,8 @@ import java.util.*
 class DetailsFragment : Fragment() {
 
     private lateinit var detailsBinding: FragmentDetailsBinding
+    private lateinit var eventViewModel: EventViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,21 +41,26 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         detailsBinding = FragmentDetailsBinding.bind(view)
+        eventViewModel = (activity as MainActivity).eventViewModel
 
         val args: DetailsFragmentArgs by navArgs()
         val eventItem = args.eventItem
 
         detailsBinding.apply {
 
-            if(verifyImageSource(eventItem.image!!)){
+            if (verifyImageSource(eventItem.image!!)) {
                 Glide.with(requireContext()).load(eventItem.image).into(ivDetail)
-            }else{
+            } else {
                 Glide.with(requireContext()).load(noImageUrl).into(ivDetail)
             }
 
             tvTitle.text = eventItem.title
             tvDesc.text = eventItem.description
             tvDate.text = "Publicado em ${convertLongToTime(eventItem.date!!.toLong())}"
+
+            buttonSend.setOnClickListener {
+                sendRequest(eventItem)
+            }
         }
 
         detailsBinding.ivBack.setOnClickListener {
@@ -56,8 +69,49 @@ class DetailsFragment : Fragment() {
             )
         }
 
+    }
+
+    private fun sendRequest(item: EventItemModel) {
+        val peopleModel = PeopleModel(
+            item.id,
+            item.id,
+            "Junior Raveline",
+            item.image,
+            "junior.raveline@hotmail.com",
+        )
+        eventViewModel.sendEvent(id, peopleModel)
+
+        eventViewModel.sendEvents.observe(viewLifecycleOwner, { response ->
+
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { event ->
+                        Toast.makeText(activity, "Enviado com Sucesso!", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(
+                            R.id.action_detailsFragment_to_mainFragment
+                        )
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+
+                }
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let {
+                        Toast.makeText(activity, "Ocorreu um erro: $it", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
 
     }
+
+    private fun share(){
+
+    }
+
 
     private fun convertLongToTime(time: Long): String {
         val date = Date(time)
@@ -68,6 +122,15 @@ class DetailsFragment : Fragment() {
     private fun verifyImageSource(url: String): Boolean {
         val urlRegex = Patterns.WEB_URL.matcher(url)
         return urlRegex.matches()
+    }
+
+
+    private fun showProgressBar() {
+        detailsBinding.progressBarDetail.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        detailsBinding.progressBarDetail.visibility = View.GONE
     }
 
 

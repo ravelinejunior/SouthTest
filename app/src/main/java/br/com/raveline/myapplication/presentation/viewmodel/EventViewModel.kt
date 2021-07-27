@@ -9,16 +9,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.raveline.myapplication.data.model.EventModel
+import br.com.raveline.myapplication.data.model.PeopleModel
 import br.com.raveline.myapplication.data.utils.Resource
+import br.com.raveline.myapplication.domain.usecase.CheckInUseCase
 import br.com.raveline.myapplication.domain.usecase.GetEventsUseCase
+import br.com.raveline.myapplication.domain.usecase.ShareEventUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EventViewModel(
     private val getEventsUseCase: GetEventsUseCase,
+    private val shareEventUseCase: ShareEventUseCase,
+    private val checkInUseCase: CheckInUseCase,
     private val application: Application
 ) : ViewModel() {
      val events: MutableLiveData<Resource<EventModel>> = MutableLiveData()
+     val sendEvents: MutableLiveData<Resource<PeopleModel>> = MutableLiveData()
 
     fun getEvents() = viewModelScope.launch(Dispatchers.IO) {
 
@@ -37,6 +43,19 @@ class EventViewModel(
             events.postValue(Resource.Error("Erro: ${e.message}"))
         }
 
+    }
+
+    fun sendEvent(id:Int,peopleModel: PeopleModel) = viewModelScope.launch(Dispatchers.IO) {
+        try{
+            if (isNetworkAvailable(application)) {
+                val apiResult = checkInUseCase.execute(peopleModel)
+                sendEvents.postValue(apiResult)
+            } else {
+                sendEvents.postValue(Resource.Error("Verifique sua conexão com a internet e tente novamente!"))
+            }
+        }catch (e:Exception){
+            sendEvents.postValue(Resource.Error("Erro: ${e.message}"))
+        }
     }
 
 

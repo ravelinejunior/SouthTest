@@ -8,6 +8,6 @@ import br.com.raveline.myapplication.data.utils.Resource
 interface EventsRepository {
     suspend fun getEvents(): Resource<EventModel>
     suspend fun getEventsById(id:Int): Resource<EventItemModel>
-    suspend fun shareEvent(peopleModel: PeopleModel)
+    suspend fun shareEvent(peopleModel: PeopleModel):PeopleModel
     suspend fun checkInEvent(peopleModel: PeopleModel):Resource<PeopleModel>
 }

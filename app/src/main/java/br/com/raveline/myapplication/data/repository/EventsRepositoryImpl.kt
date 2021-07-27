@@ -15,12 +15,12 @@ class EventsRepositoryImpl(
         return responseToResource(eventsDataSource.getEvents())
     }
 
-    override suspend fun getEventsById(id:Int): Resource<EventItemModel> {
+    override suspend fun getEventsById(id: Int): Resource<EventItemModel> {
         return responseToResourceItem(eventsDataSource.getEventById(id))
     }
 
-    override suspend fun shareEvent(peopleModel: PeopleModel) {
-        eventsDataSource.shareEvent()
+    override suspend fun shareEvent(peopleModel: PeopleModel): PeopleModel {
+       return peopleModel
     }
 
     override suspend fun checkInEvent(peopleModel: PeopleModel): Resource<PeopleModel> {
@@ -54,6 +54,5 @@ class EventsRepositoryImpl(
         }
         return Resource.Error(response.message())
     }
-
 
 }
