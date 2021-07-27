@@ -1,6 +1,7 @@
 package br.com.raveline.myapplication.presentation.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -61,6 +62,10 @@ class DetailsFragment : Fragment() {
             buttonSend.setOnClickListener {
                 sendRequest(eventItem)
             }
+
+            buttonShare.setOnClickListener {
+                share(eventItem)
+            }
         }
 
         detailsBinding.ivBack.setOnClickListener {
@@ -79,7 +84,7 @@ class DetailsFragment : Fragment() {
             item.image,
             "junior.raveline@hotmail.com",
         )
-        eventViewModel.sendEvent(id, peopleModel)
+        eventViewModel.sendEvent(peopleModel)
 
         eventViewModel.sendEvents.observe(viewLifecycleOwner, { response ->
 
@@ -108,30 +113,50 @@ class DetailsFragment : Fragment() {
 
     }
 
-    private fun share(){
+    private fun share(item: EventItemModel) {
 
+        val sendObject = StringBuilder()
+
+        if (item.people != null && item.people.isNotEmpty()) {
+            sendObject.append("Id: ${item.id}\n")
+                .append("Nome: ${item.people?.get(0)?.name}\n")
+                .append("Email: ${item.people?.get(0)?.name?.replace(" ", "")}@email.com\n")
+        } else
+            sendObject.append("Id: ${item.id}\n")
+                .append("Nome: Franklin\n")
+                .append("Email: franklin@email.com")
+
+
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, sendObject.toString())
+        type = "text/plain"
     }
 
-
-    private fun convertLongToTime(time: Long): String {
-        val date = Date(time)
-        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        return format.format(date)
-    }
-
-    private fun verifyImageSource(url: String): Boolean {
-        val urlRegex = Patterns.WEB_URL.matcher(url)
-        return urlRegex.matches()
-    }
+    val shareIntent = Intent.createChooser(sendIntent, "Compartilhar")
+    startActivity(shareIntent)
+}
 
 
-    private fun showProgressBar() {
-        detailsBinding.progressBarDetail.visibility = View.VISIBLE
-    }
+private fun convertLongToTime(time: Long): String {
+    val date = Date(time)
+    val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return format.format(date)
+}
 
-    private fun hideProgressBar() {
-        detailsBinding.progressBarDetail.visibility = View.GONE
-    }
+private fun verifyImageSource(url: String): Boolean {
+    val urlRegex = Patterns.WEB_URL.matcher(url)
+    return urlRegex.matches()
+}
+
+
+private fun showProgressBar() {
+    detailsBinding.progressBarDetail.visibility = View.VISIBLE
+}
+
+private fun hideProgressBar() {
+    detailsBinding.progressBarDetail.visibility = View.GONE
+}
 
 
 }

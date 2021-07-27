@@ -45,7 +45,7 @@ class EventViewModel(
 
     }
 
-    fun sendEvent(id:Int,peopleModel: PeopleModel) = viewModelScope.launch(Dispatchers.IO) {
+    fun sendEvent(peopleModel: PeopleModel) = viewModelScope.launch(Dispatchers.IO) {
         try{
             if (isNetworkAvailable(application)) {
                 val apiResult = checkInUseCase.execute(peopleModel)
