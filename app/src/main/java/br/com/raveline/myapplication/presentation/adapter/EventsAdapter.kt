@@ -56,12 +56,14 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.MyViewHolder>() {
             adapterBinding.apply {
                 tvTitleMainAdapter.text = eventItem.title
                 if (verifyImageSource(eventItem.image!!)) {
-                    Glide.with(ivMainAdapter.context).load(eventItem.image).into(ivMainAdapter)
+                    Glide.with(ivDetailMainAdapter.context).load(eventItem.image).into(ivDetailMainAdapter)
                 } else {
-                    Glide.with(ivMainAdapter.context).load(noImageUrl).into(ivMainAdapter)
+                    Glide.with(ivDetailMainAdapter.context).load(noImageUrl).into(ivDetailMainAdapter)
                 }
 
-                root.setOnClickListener {
+                tvDateMainAdapter.text = "Publicado em ${convertLongToTime(eventItem.date!!.toLong())}"
+
+                ivDetailMainAdapter.setOnClickListener {
                     onItemClickListener?.let { item ->
                         item(eventItem)
                     }
@@ -71,8 +73,11 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.MyViewHolder>() {
         }
     }
 
-
-
+    private fun convertLongToTime(time: Long): String {
+        val date = Date(time)
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return format.format(date)
+    }
 
     fun verifyImageSource(url: String): Boolean {
         val urlRegex = Patterns.WEB_URL.matcher(url)
